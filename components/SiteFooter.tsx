@@ -1,47 +1,49 @@
-import Image from 'next/image';
-
-const logoPath = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/cyfrosec-mark.png`;
+import { Wordmark } from '@/components/Wordmark';
+import { footerNav, legalEntity, links } from '@/components/content';
 
 export function SiteFooter() {
   return (
     <footer className="site-footer">
-      <div className="container footer-main">
+      <div className="container footer-top">
         <div className="footer-brand">
-          <a className="brand" href="#top">
-            <Image src={logoPath} alt="" width={32} height={32} aria-hidden="true" />
-            <span>CyfroSec</span>
-          </a>
+          <Wordmark tone="white" />
           <p>Understand your environment better than an attacker ever could.</p>
+          <a className="footer-mail" href="mailto:contact@cyfrosec.com">
+            contact@cyfrosec.com
+          </a>
         </div>
-        <nav aria-label="Footer navigation" className="footer-links">
-          <div>
-            <strong>Explore</strong>
-            <a href="#platform">Platform</a>
-            <a href="#solutions">Solutions</a>
-            <a href="#teams">Who it helps</a>
-            <a href="https://www.cyfrosec.com/documents/">Documentation</a>
-          </div>
-          <div>
-            <strong>Company</strong>
-            <a href="https://www.cyfrosec.com/about/">About</a>
-            <a href="https://www.cyfrosec.com/contact/">Contact</a>
-            <a href="https://www.cyfrosec.com/book-demo/">Book a demo</a>
-          </div>
-          <div>
-            <strong>Legal</strong>
-            <a href="https://www.cyfrosec.com/privacy/">Privacy policy</a>
-            <a href="https://www.cyfrosec.com/terms/">Terms of service</a>
-            <a href="https://www.cyfrosec.com/cookies/">Cookie policy</a>
-          </div>
+        <nav className="footer-nav" aria-label="Footer">
+          {footerNav.map((group) => (
+            <div key={group.title}>
+              <p>{group.title}</p>
+              <ul>
+                {group.links.map((link) => (
+                  <li key={link.label}>
+                    <a href={link.href}>{link.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </nav>
       </div>
+      <div className="container footer-legal">
+        <p>{legalEntity}</p>
+      </div>
       <div className="container footer-bottom">
-        <p>
-          Cyfrosec Prosta Spółka Akcyjna · Ul. Józefa Marcika 6, 30-443 Kraków, Poland · KRS:
-          0001250469 · NIP: 6793369771 · Share capital: PLN 100.00 · Registration court: Sąd
-          Rejonowy dla Krakowa-Śródmieścia w Krakowie
-        </p>
         <p>© 2026 CyfroSec. All rights reserved.</p>
+        <ul>
+          <li>
+            <a href={links.privacy}>Privacy policy</a>
+          </li>
+          <li>
+            <a href={links.terms}>Terms of service</a>
+          </li>
+          <li>
+            <a href={links.cookies}>Cookie policy</a>
+          </li>
+          <li className="footer-eu">Made in the EU</li>
+        </ul>
       </div>
     </footer>
   );

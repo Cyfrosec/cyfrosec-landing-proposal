@@ -1,11 +1,32 @@
-import { ArrowRight, Check, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Database,
+  Globe2,
+  ScrollText,
+  Server,
+  ShieldCheck,
+  UsersRound,
+} from 'lucide-react';
 import { SiteHeader } from '@/components/SiteHeader';
-import { HeroFlow } from '@/components/HeroFlow';
-import { ProductPreview } from '@/components/ProductPreview';
 import { SiteFooter } from '@/components/SiteFooter';
-import { audiences, capabilities, faqs, painPoints, trustPoints } from '@/components/content';
+import { ExploitChart } from '@/components/ExploitChart';
+import { ArchitectureDiagram } from '@/components/ArchitectureDiagram';
+import { FindingExplainer } from '@/components/FindingExplainer';
+import { AudienceViews } from '@/components/AudienceViews';
+import { BrandRings } from '@/components/BrandRings';
+import { HeroRadar } from '@/components/HeroRadar';
+import { approach, asset, faqs, hero, links, problems, securityPoints } from '@/components/content';
 
-const demoUrl = 'https://www.cyfrosec.com/book-demo/';
+const securityIcons = {
+  compliance: ShieldCheck,
+  residency: Globe2,
+  rbac: UsersRound,
+  audit: ScrollText,
+  onprem: Server,
+  sources: Database,
+} as const;
 
 export default function Home() {
   return (
@@ -14,235 +35,268 @@ export default function Home() {
         Skip to content
       </a>
       <SiteHeader />
+
       <main id="main">
+        {/* Hero */}
         <section className="hero" aria-labelledby="hero-title">
           <div className="container">
-            <div className="hero-copy">
-              <span className="eyebrow">
-                <span className="eyebrow-line" /> CYFROSEC PLATFORM{' '}
-                <span className="eyebrow-slash">/</span> CODE TO CLOUD
-              </span>
-              <h1 id="hero-title">
-                From discovery to <em>decisive action.</em>
-              </h1>
-              <p>
-                Understand your exposure across code and infrastructure. Know what matters, why it
-                matters, and where to act first.
-              </p>
-              <div className="hero-actions">
-                <a className="button" href={demoUrl}>
-                  Book a demo <ArrowRight size={17} aria-hidden="true" />
-                </a>
-                <a className="button button-outline" href="#platform">
-                  See the platform <ArrowRight size={17} aria-hidden="true" />
-                </a>
+            <div className="hero-grid">
+              <div className="hero-copy">
+                <p className="kicker kicker-dark">{hero.kicker}</p>
+                <h1 id="hero-title">{hero.title}</h1>
+                <p className="hero-lede">{hero.lede}</p>
+                <div className="hero-actions">
+                  <a className="button button-light" href={links.demo}>
+                    Book a demo <ArrowRight size={16} aria-hidden="true" />
+                  </a>
+                  <a className="button button-ghost-dark" href={links.contact}>
+                    Contact sales
+                  </a>
+                </div>
               </div>
+              <HeroRadar />
             </div>
-            <HeroFlow />
+            <dl className="hero-facts">
+              {hero.facts.map((fact) => (
+                <div key={fact.label}>
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="container hero-stage">
+            <figure className="product-frame">
+              <div className="product-bar">
+                <span className="product-crumb">
+                  CyfroSec <span aria-hidden="true">/</span> Dashboard
+                </span>
+                <span className="product-env">Demo environment</span>
+              </div>
+              <div className="product-shot">
+                <Image
+                  src={asset('/product/dashboard.png')}
+                  alt="The CyfroSec dashboard, showing asset discovery, scan status, vulnerabilities by severity with top critical findings, AI insights and agent status."
+                  width={1698}
+                  height={1058}
+                  priority
+                />
+              </div>
+            </figure>
           </div>
         </section>
 
-        <section className="mission-band" aria-labelledby="mission-title">
-          <div className="container mission-grid">
-            <div>
-              <span className="eyebrow">OUR MISSION</span>
-              <h2 id="mission-title">
-                Make AI-driven security <span>simple, actionable, and accessible.</span>
-              </h2>
-              <p>So every team can focus on what truly matters.</p>
-            </div>
-            <div>
-              <span className="eyebrow">OUR VISION</span>
-              <h2>
-                One unified security platform <span>from code to cloud.</span>
-              </h2>
-              <p>Clear visibility from development to deployment and beyond.</p>
-            </div>
-          </div>
-        </section>
-
-        <section id="why" className="section" aria-labelledby="why-title">
+        {/* Problem */}
+        <section id="why" className="section section-paper" aria-labelledby="why-title">
           <div className="container">
-            <div className="section-heading split-heading">
+            <header className="section-head">
               <div>
-                <span className="eyebrow">THE PROBLEM WE SOLVE</span>
+                <p className="kicker">Why traditional security platforms fall behind</p>
                 <h2 id="why-title">
-                  Security data is everywhere.
-                  <br />
-                  <span>Decisions should be clear.</span>
+                  Built for yesterday’s infrastructure, not today’s AI‑driven threats.
                 </h2>
               </div>
-              <p>
-                Disconnected tools create blind spots and noisy backlogs. CyfroSec brings signals
-                together so teams can understand exposure and move with confidence.
+              <p className="section-intro">
+                Most tools secure code, cloud, endpoints and infrastructure in silos. The result is
+                noise, blind spots and unclear priorities, and the findings that matter get lost
+                among the ones that don’t.
               </p>
-            </div>
-            <div className="pain-grid">
-              {painPoints.map((point) => (
-                <article className="pain-item" key={point.number}>
-                  <span className="item-number">{point.number}</span>
-                  <h3>{point.title}</h3>
-                  <p>{point.description}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+            </header>
 
-        <section
-          id="platform"
-          className="section platform-section"
-          aria-labelledby="platform-title"
-        >
-          <div className="container">
-            <div className="section-heading centered-heading">
-              <span className="eyebrow">ONE CONNECTED PLATFORM</span>
-              <h2 id="platform-title">
-                See the risk. Understand the priority. <span>Take action.</span>
-              </h2>
-              <p>Discovery, context, and guidance in a single flow.</p>
-            </div>
-            <ProductPreview />
-            <div className="steps">
-              <div>
-                <span>01 / DISCOVER</span>
-                <h3>See what is exposed.</h3>
-                <p>
-                  Bring code-security findings, assets, services, and network signals into view.
-                </p>
-              </div>
-              <div>
-                <span>02 / PRIORITIZE</span>
-                <h3>Focus on real risk.</h3>
-                <p>
-                  CyfroAI relates findings to exposure and asset context so teams can decide what
-                  needs attention.
-                </p>
-              </div>
-              <div>
-                <span>03 / REMEDIATE</span>
-                <h3>Move toward the fix.</h3>
-                <p>Give engineers practical guidance and leaders a clearer picture of progress.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="solutions" className="section" aria-labelledby="solutions-title">
-          <div className="container">
-            <div className="section-heading split-heading">
-              <div>
-                <span className="eyebrow">PURPOSE-BUILT CAPABILITIES</span>
-                <h2 id="solutions-title">
-                  Every layer has a role.
-                  <br />
-                  <span>Every signal has context.</span>
-                </h2>
-              </div>
-              <p>
-                From collection and code analysis to insight and guided response, each part of
-                CyfroSec contributes to a connected view.
-              </p>
-            </div>
-            <div className="capability-grid">
-              {capabilities.map((item) => (
-                <a href={item.href} className="capability" key={item.number}>
-                  <span className="capability-top">
-                    {item.number} / {item.tag}
+            <figure className="exploit">
+              <div className="exploit-numbers">
+                <div>
+                  <span className="exploit-value">23,667</span>
+                  <span className="exploit-label">CVEs published in the first half of 2025</span>
+                </div>
+                <div>
+                  <span className="exploit-value is-signal">161</span>
+                  <span className="exploit-label">
+                    were exploited in the wild. Most of the others were treated with the same
+                    urgency.
                   </span>
-                  <div className="capability-content">
-                    <div>
-                      <h3>{item.title}</h3>
-                      <p>{item.description}</p>
-                    </div>
-                    <ArrowRight size={22} aria-hidden="true" />
-                  </div>
+                </div>
+              </div>
+              <ExploitChart />
+              <figcaption>
+                <span className="legend">
+                  <span className="legend-item">
+                    <i className="legend-cve" aria-hidden="true" /> One CVE
+                  </span>
+                  <span className="legend-item">
+                    <i className="legend-exploited" aria-hidden="true" /> Exploited
+                  </span>
+                </span>
+                <span>
+                  Source:{' '}
+                  <a href={links.cveSource} target="_blank" rel="noreferrer">
+                    Recorded Future, H1 2025 Malware and Vulnerability Trends
+                  </a>
+                </span>
+              </figcaption>
+            </figure>
+
+            <ul className="problems">
+              {problems.map((problem) => (
+                <li key={problem.label}>
+                  <p className="problem-label">{problem.label}</p>
+                  <h3>{problem.title}</h3>
+                  <p>{problem.body}</p>
+                  <a className="text-link" href={problem.link.href}>
+                    {problem.link.label} <ArrowRight size={15} aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* Approach */}
+        <section className="section section-white approach" aria-labelledby="approach-title">
+          <div className="container">
+            <div className="approach-grid">
+              <p className="kicker" id="approach-title">
+                Our approach
+              </p>
+              <figure className="mission">
+                <blockquote>
+                  <p>{approach.mission}</p>
+                </blockquote>
+                <figcaption>The CyfroSec mission</figcaption>
+              </figure>
+              <div className="approach-body">
+                <p>{approach.body}</p>
+                <a className="text-link" href={links.about}>
+                  About CyfroSec <ArrowRight size={15} aria-hidden="true" />
                 </a>
-              ))}
+              </div>
             </div>
+            <ul className="pillars">
+              {approach.pillars.map((pillar) => (
+                <li key={pillar.title}>
+                  <h3>{pillar.title}</h3>
+                  <p>{pillar.body}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
-        <section id="teams" className="section teams-section" aria-labelledby="teams-title">
-          <div className="container teams-layout">
-            <div className="teams-lead">
-              <span className="eyebrow">BUILT FOR EVERY DECISION</span>
-              <h2 id="teams-title">
-                One view.
-                <br />
-                <span>The right depth for every team.</span>
-              </h2>
-              <p>
-                Turn technical evidence into shared understanding without losing the detail
-                engineers need.
-              </p>
-              <a className="text-link" href="https://www.cyfrosec.com/solutions/">
-                Explore solutions <ArrowRight size={17} aria-hidden="true" />
-              </a>
-            </div>
-            <div className="audience-list">
-              {audiences.map((item) => (
-                <div key={item.number}>
-                  <span className="item-number">{item.number}</span>
-                  <div>
-                    <h3>{item.title}</h3>
-                    <p>{item.description}</p>
-                  </div>
-                  <ChevronRight size={19} aria-hidden="true" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="trust" className="section trust-section" aria-labelledby="trust-title">
+        {/* Platform */}
+        <section id="platform" className="section section-dark" aria-labelledby="platform-title">
           <div className="container">
-            <div className="section-heading split-heading">
+            <header className="section-head">
               <div>
-                <span className="eyebrow">CONTROL & DEPLOYMENT</span>
-                <h2 id="trust-title">
-                  A platform that fits <span>your environment.</span>
+                <p className="kicker kicker-dark">Vulnerability assessment as a service</p>
+                <h2 id="platform-title">One platform. Every layer.</h2>
+              </div>
+              <p className="section-intro">
+                Stop stitching together fragmented tools. CyfroAgent and CyfroCode collect data from
+                across your environment, the CyfroAI Engine analyzes it, and CyfroAI Insights turns
+                it into guidance your team can act on.
+              </p>
+            </header>
+            <ArchitectureDiagram />
+          </div>
+        </section>
+
+        {/* Engine */}
+        <section id="engine" className="section section-paper" aria-labelledby="engine-title">
+          <div className="container">
+            <header className="section-head">
+              <div>
+                <p className="kicker">CyfroAI Engine</p>
+                <h2 id="engine-title">Know why it matters, what to fix first, and exactly how.</h2>
+              </div>
+              <p className="section-intro">
+                The CyfroAI Engine doesn’t stop at detection. Every finding comes with the context,
+                reasoning and remediation steps your team needs to act on it.
+              </p>
+            </header>
+            <FindingExplainer />
+          </div>
+        </section>
+
+        {/* Teams */}
+        <section id="teams" className="section section-white" aria-labelledby="teams-title">
+          <div className="container">
+            <header className="section-head">
+              <div>
+                <p className="kicker">Who CyfroSec is for</p>
+                <h2 id="teams-title">
+                  Built for the people who manage infrastructure, not just the security team.
                 </h2>
               </div>
-              <p>
-                Visibility is useful when the right teams can act on it with the right controls.
-                CyfroSec supports different deployment needs and accountable access.
+              <p className="section-intro">
+                Leaders get high-level insights. Security teams get the technical detail they need
+                to act. Everyone works from the same findings.
               </p>
-            </div>
-            <div className="trust-grid">
-              {trustPoints.map((item) => (
-                <div className="trust-item" key={item.title}>
-                  <span className="trust-check">
-                    <Check size={18} aria-hidden="true" />
-                  </span>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </div>
-              ))}
-            </div>
-            <a className="text-link trust-link" href="https://www.cyfrosec.com/products/overview/">
-              Explore the platform <ArrowRight size={17} aria-hidden="true" />
-            </a>
+            </header>
+            <AudienceViews />
           </div>
         </section>
 
-        <section id="faq" className="section faq-section" aria-labelledby="faq-title">
-          <div className="container faq-layout">
+        {/* Security */}
+        <section id="security" className="section section-dark" aria-labelledby="security-title">
+          <div className="container security-grid">
+            <div className="security-lead">
+              <p className="kicker kicker-dark">Security and CyfroCompliance</p>
+              <h2 id="security-title">Built on security‑first principles.</h2>
+              <p className="section-intro">
+                CyfroSec protects your infrastructure and keeps it up to date, with deployment and
+                data residency options that fit your governance.
+              </p>
+              <div className="eu-note">
+                <span className="eu-stars" aria-hidden="true">
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <i key={i} style={{ transform: `rotate(${i * 30}deg) translateY(-11px)` }} />
+                  ))}
+                </span>
+                <p>
+                  <strong>Made in the EU.</strong> Developed by Cyfrosec P.S.A. in Kraków, Poland.
+                </p>
+              </div>
+            </div>
+            <ul className="security-list">
+              {securityPoints.map((point) => {
+                const Icon = securityIcons[point.icon];
+                return (
+                  <li key={point.title}>
+                    <Icon size={20} strokeWidth={1.6} aria-hidden="true" />
+                    <h3>{point.title}</h3>
+                    <p>{point.body}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section id="faq" className="section section-paper" aria-labelledby="faq-title">
+          <div className="container faq-grid">
             <div>
-              <span className="eyebrow">COMMON QUESTIONS</span>
-              <h2 id="faq-title">
-                A clearer picture <span>starts here.</span>
-              </h2>
-              <p>
-                Learn how CyfroSec connects your security signals and supports the next decision.
+              <p className="kicker">Questions</p>
+              <h2 id="faq-title">What teams ask us first.</h2>
+              <p className="section-intro">
+                Can’t find your answer? Read the{' '}
+                <a className="inline-link" href={links.docs}>
+                  documentation
+                </a>{' '}
+                or{' '}
+                <a className="inline-link" href={links.contact}>
+                  talk to our team
+                </a>
+                .
               </p>
             </div>
             <div className="faq-list">
               {faqs.map((item) => (
                 <details key={item.question}>
                   <summary>
-                    {item.question}
-                    <span aria-hidden="true">+</span>
+                    <span>{item.question}</span>
+                    <i aria-hidden="true" />
                   </summary>
                   <p>{item.answer}</p>
                 </details>
@@ -251,21 +305,30 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="final-cta" aria-labelledby="cta-title">
-          <div className="container cta-layout">
-            <div>
-              <span className="eyebrow">READY TO SEE WHAT MATTERS?</span>
-              <h2 id="cta-title">See CyfroSec in action.</h2>
-              <p>
-                Walk through the platform with our team and explore how it can fit your environment.
-              </p>
+        {/* Closing call to action */}
+        <section className="cta" aria-labelledby="cta-title">
+          <BrandRings className="cta-rings" />
+          <div className="container cta-inner">
+            <h2 id="cta-title">
+              Secure everything from code to cloud.
+              <span>From exposure discovery to remediation.</span>
+            </h2>
+            <p>
+              See CyfroSec in action with a live demo, or talk to our team about your specific
+              needs.
+            </p>
+            <div className="hero-actions">
+              <a className="button button-light" href={links.demo}>
+                Book a demo <ArrowRight size={16} aria-hidden="true" />
+              </a>
+              <a className="button button-ghost-dark" href={links.contact}>
+                Contact sales <ArrowUpRight size={16} aria-hidden="true" />
+              </a>
             </div>
-            <a className="button" href={demoUrl}>
-              Book a demo <ArrowRight size={18} aria-hidden="true" />
-            </a>
           </div>
         </section>
       </main>
+
       <SiteFooter />
     </div>
   );
